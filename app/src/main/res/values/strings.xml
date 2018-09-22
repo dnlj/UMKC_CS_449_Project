@@ -1,4 +1,6 @@
 <resources>
 	<string name="app_name">Tasky</string>
+	<string name="settings_label">Settings</string>
+	<string name="add_task_label">Add Task</string>
 	<string name="example_text">This is example text!</string>
 </resources>
