@@ -20,6 +20,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		
 		public ViewHolder(View view) {
 			super(view);
+			
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					System.out.println("Click: " + getAdapterPosition());
+				}
+			});
+			
 			mTextView = view.findViewById(R.id.text_view);
 		}
 	}
