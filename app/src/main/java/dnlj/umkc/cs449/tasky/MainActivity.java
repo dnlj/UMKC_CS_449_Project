@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(adapter);
 		
 		// Show new task dialog
-		new NewTaskDialogFragment().show(getSupportFragmentManager(), null);
+		NewTaskDialogFragment ntdf = new NewTaskDialogFragment();
+		ntdf.show(getSupportFragmentManager(), null);
+		ntdf.setCancelable(true);
 	}
 	
 	@Override
