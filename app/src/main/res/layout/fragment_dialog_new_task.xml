@@ -1,20 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="@dimen/margin"
 	tools:context=".NewTaskDialogFragment">
 
 	<!-- TODO: Update blank fragment layout -->
-	<TextView
-		android:id="@+id/textView"
-		android:layout_width="wrap_content"
+	<EditText
+		android:id="@+id/new_task_name"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="hello_blank_fragment"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+		android:ems="10"
+		android:hint="@string/new_task_name_hint"
+		android:inputType="textPersonName"
+		android:singleLine="true" />
 
-</android.support.constraint.ConstraintLayout>
+	<EditText
+		android:id="@+id/new_task_interval"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:hint="@string/new_task_interval_hint"
+		android:inputType="number" />
+
+	<Switch
+		android:id="@+id/new_task_alert_toggle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/alert_toggle_label" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/new_task_ok"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/cancel" />
+
+		<Button
+			android:id="@+id/new_task_cancel"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/ok" />
+	</LinearLayout>
+
+</LinearLayout>

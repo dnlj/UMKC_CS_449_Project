@@ -3,4 +3,7 @@
 	<string name="settings_label">Settings</string>
 	<string name="add_task_label">Add Task</string>
 	<string name="example_text">This is example text!</string>
+	<string name="alert_toggle_label">Alerts</string>
+	<string name="new_task_name_hint">Task Name</string>
+	<string name="new_task_interval_hint">Task Interval</string>
 </resources>
