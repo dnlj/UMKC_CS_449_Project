@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class NewTaskDialogFragment extends DialogFragment {
 	@Override
@@ -20,22 +21,24 @@ public class NewTaskDialogFragment extends DialogFragment {
 		return v;
 	}
 	
-	private void setupListeners(View v) {
+	private void setupListeners(final View v) {
 		v.findViewById(R.id.new_task_cancel).setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View clickView) {
 				dismiss();
 			}
 		});
 		
 		v.findViewById(R.id.new_task_ok).setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View clickView) {
 				TaskInfo task = new TaskInfo();
 				
-				task.name = "Test";
 				task.interval = 0;
 				task.alert = true;
+				
+				EditText name = v.findViewById(R.id.new_task_name);
+				task.name = name.getText().toString();
 				
 				((MainActivity)getActivity()).addTask(task);
 				dismiss();
