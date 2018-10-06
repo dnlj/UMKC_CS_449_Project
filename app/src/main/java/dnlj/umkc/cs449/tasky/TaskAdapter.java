@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 // REF: https://developer.android.com/guide/topics/ui/layout/recyclerview#java
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
-	private String[] data;
+	private ArrayList<TaskInfo> data;
 	
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and
@@ -32,8 +34,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		}
 	}
 	
-	public TaskAdapter(String[] data) {
-		this.data = data;
+	public TaskAdapter() {
+		data = new ArrayList<>();
+	}
+	
+	public void addTask(TaskInfo task) {
+		data.add(task);
+		notifyItemInserted(data.size() - 1);
 	}
 	
 	// Create new views (invoked by the layout manager)
@@ -48,11 +55,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	// Replace the contents of a view (invoked by the layout manager)
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.mTextView.setText(data[position]);
+		holder.mTextView.setText(data.get(position).name);
 	}
 	
 	@Override
 	public int getItemCount() {
-		return data.length;
+		return data.size();
 	}
 }

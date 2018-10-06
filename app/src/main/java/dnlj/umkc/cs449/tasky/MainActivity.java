@@ -13,7 +13,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private RecyclerView.LayoutManager layoutManager;
-	private RecyclerView.Adapter adapter;
+	private TaskAdapter adapter;
 	
 	private Toolbar toolbar;
 	
@@ -28,25 +28,34 @@ public class MainActivity extends AppCompatActivity {
 		toolbar.inflateMenu(R.menu.toolbar);
 		
 		// Setup recycler view
-		String[] data = new String[100];
-		
-		for (int i=0; i < 100; ++i) {
-			data[i] = "Element: " + i;
-		}
-		
 		recyclerView = findViewById(R.id.task_view);
 		layoutManager = new LinearLayoutManager(this);
-		adapter = new TaskAdapter(data);
+		adapter = new TaskAdapter();
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
 		
 		// Other setup
 		setupListeners();
+		
+		for (int i =0; i < 5; ++i) {
+			TaskInfo task = new TaskInfo();
+			
+			task.name = "Task: " + String.valueOf(i);
+			task.interval = 0;
+			task.alert = true;
+			
+			adapter.addTask(task);
+		}
 	}
 	
 	private void setupListeners() {
 		// TODO:
+	}
+	
+	public void addTask(TaskInfo task) {
+		System.out.println("~~~ Add Task");
+		adapter.addTask(task);
 	}
 	
 	private void showNewTaskDialog() {
