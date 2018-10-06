@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
@@ -40,7 +41,15 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
 		
-		// Show new task dialog
+		// Other setup
+		setupListeners();
+	}
+	
+	private void setupListeners() {
+		// TODO:
+	}
+	
+	private void showNewTaskDialog() {
 		NewTaskDialogFragment ntdf = new NewTaskDialogFragment();
 		ntdf.show(getSupportFragmentManager(), null);
 		ntdf.setCancelable(true);
@@ -51,5 +60,17 @@ public class MainActivity extends AppCompatActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.toolbar, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		
+		if (id == R.id.add_task) {
+			showNewTaskDialog();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 }
