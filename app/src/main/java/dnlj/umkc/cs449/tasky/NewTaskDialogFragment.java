@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Switch;
 
 public class NewTaskDialogFragment extends DialogFragment {
 	@Override
@@ -34,11 +35,9 @@ public class NewTaskDialogFragment extends DialogFragment {
 			public void onClick(View clickView) {
 				TaskInfo task = new TaskInfo();
 				
+				task.name = ((EditText)v.findViewById(R.id.new_task_name)).getText().toString();
 				task.interval = 0;
-				task.alert = true;
-				
-				EditText name = v.findViewById(R.id.new_task_name);
-				task.name = name.getText().toString();
+				task.alert = ((Switch)v.findViewById(R.id.new_task_alert_toggle)).isChecked();
 				
 				((MainActivity)getActivity()).addTask(task);
 				dismiss();

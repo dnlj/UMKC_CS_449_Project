@@ -40,6 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	
 	public void addTask(TaskInfo task) {
 		data.add(task);
+		System.out.println(task.alert);
 		notifyItemInserted(data.size() - 1);
 	}
 	
