@@ -6,9 +6,47 @@
 	android:layout_height="match_parent"
 	tools:context=".TaskActivity">
 
-	<Spinner
-		android:id="@+id/spinner2"
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/task_toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:entries="@array/task_complete_options" />
+		android:background="?attr/colorPrimary"
+		android:minHeight="?attr/actionBarSize"
+		android:theme="?attr/actionBarTheme" />
+
+	<Spinner
+		android:id="@+id/task_complete_spinner"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="@dimen/margin"
+		android:layout_marginTop="@dimen/margin"
+		android:entries="@array/task_complete_options"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/task_toolbar" />
+
+	<Switch
+		android:id="@+id/task_alert_toggle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="@dimen/margin"
+		android:text="@string/alert_toggle_label"
+		app:layout_constraintBaseline_toBaselineOf="@+id/task_complete_spinner"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+	<android.support.v7.widget.GridLayout
+		android:id="@+id/task_calendar_grid"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginBottom="@dimen/margin"
+		android:layout_marginEnd="@dimen/margin"
+		android:layout_marginStart="@dimen/margin"
+		android:layout_marginTop="@dimen/margin"
+		app:columnCount="7"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/task_complete_spinner"
+		app:rowCount="5">
+
+	</android.support.v7.widget.GridLayout>
 </android.support.constraint.ConstraintLayout>
