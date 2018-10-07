@@ -1,5 +1,7 @@
 package dnlj.umkc.cs449.tasky;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -57,6 +59,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		@Override
 		public void onClick(View v) {
 			System.out.println("Click: " + getAdapterPosition());
+			
+			Context ctx = v.getContext();
+			Intent intent = new Intent(ctx, TaskActivity.class);
+			intent.putExtra("task_id", getAdapterPosition());
+			ctx.startActivity(intent);
 		}
 	}
 	

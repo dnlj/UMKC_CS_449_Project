@@ -7,4 +7,9 @@
 	<string name="new_task_name_hint">Task Name</string>
 	<string name="new_task_interval_hint">Task Interval</string>
 	<string name="delete">Delete</string>
+	<string-array name="task_complete_options">
+		<item>Unknown</item>
+		<item>Complete</item>
+		<item>Incomplete</item>
+	</string-array>
 </resources>
