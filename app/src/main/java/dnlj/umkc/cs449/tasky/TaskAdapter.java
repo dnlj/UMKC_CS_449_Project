@@ -25,8 +25,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
 		
 		public TextView mTextView;
+		private TaskAdapter taskAdapter;
 		
-		public ViewHolder(View view) {
+		public ViewHolder(View view, TaskAdapter adapter) {
 			super(view);
 			
 			view.setOnClickListener(new View.OnClickListener() {
@@ -36,8 +37,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 				}
 			});
 			
-			mTextView = view.findViewById(R.id.text_view);
 			view.setOnLongClickListener(this);
+			
+			mTextView = view.findViewById(R.id.text_view);
+			taskAdapter = adapter;
 		}
 		
 		@Override
@@ -53,9 +56,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			System.out.println("Item Click");
+			taskAdapter.removeTask(getAdapterPosition());
 			return true;
 		}
+	}
+	
+	private void removeTask(int position) {
+		data.remove(position);
+		notifyItemRemoved(position);
 	}
 	
 	public TaskAdapter() {
@@ -73,7 +81,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		View view = LayoutInflater.from(parent.getContext())
 			.inflate(R.layout.task_card, parent, false);
 		
-		return new ViewHolder(view);
+		return new ViewHolder(view, this);
 	}
 	
 	// Replace the contents of a view (invoked by the layout manager)
