@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
-import android.widget.TableLayout;
+
+import java.time.LocalDate;
 
 public class TaskActivity extends AppCompatActivity {
 	@Override
@@ -23,9 +23,22 @@ public class TaskActivity extends AppCompatActivity {
 		gridLayout.setRowCount(5);
 		gridLayout.setColumnCount(7);
 		
-		for (int i=0; i < 7*5; ++i) {
+		LocalDate currentDate = LocalDate.now();
+		LocalDate startOfMonth = currentDate.withDayOfMonth(1);
+		LocalDate endOfMonth = startOfMonth.plusDays(startOfMonth.lengthOfMonth() - 1);
+		LocalDate startDate = startOfMonth.minusDays(startOfMonth.getDayOfWeek().getValue());
+		LocalDate endDate = startDate.plusDays(7*5);
+		
+		
+		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			AppCompatButton btn = new AppCompatButton(gridLayout.getContext());
-			btn.setText(String.valueOf(i));
+			btn.setText(String.valueOf(date.getDayOfMonth()));
+			
+			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
+				btn.setEnabled(false);
+			} else if (date.isEqual(currentDate)) {
+				// TODO: Hightlight current date
+			}
 			
 			GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 			params.width = 0;
