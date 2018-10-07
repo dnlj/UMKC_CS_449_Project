@@ -22,7 +22,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	// Complex data items may need more than one view per item, and
 	// you provide access to all the views for a data item in a view holder
 	public static class ViewHolder extends RecyclerView.ViewHolder
-		implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
+		implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener, View.OnClickListener {
 		
 		public TextView mTextView;
 		private TaskAdapter taskAdapter;
@@ -30,17 +30,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		public ViewHolder(View view, TaskAdapter adapter) {
 			super(view);
 			
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					System.out.println("Click: " + getAdapterPosition());
-				}
-			});
-			
-			view.setOnLongClickListener(this);
-			
 			mTextView = view.findViewById(R.id.text_view);
 			taskAdapter = adapter;
+			
+			view.setOnClickListener(this);
+			view.setOnLongClickListener(this);
 		}
 		
 		@Override
@@ -58,6 +52,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		public boolean onMenuItemClick(MenuItem item) {
 			taskAdapter.removeTask(getAdapterPosition());
 			return true;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			System.out.println("Click: " + getAdapterPosition());
 		}
 	}
 	
