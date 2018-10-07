@@ -36,7 +36,7 @@ public class NewTaskDialogFragment extends DialogFragment {
 				TaskInfo task = new TaskInfo();
 				
 				task.name = ((EditText)v.findViewById(R.id.new_task_name)).getText().toString();
-				task.interval = 0;
+				task.interval = 0; // TODO: use enum or similar?
 				task.alert = ((Switch)v.findViewById(R.id.new_task_alert_toggle)).isChecked();
 				
 				((MainActivity)getActivity()).addTask(task);

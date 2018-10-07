@@ -6,4 +6,5 @@
 	<string name="alert_toggle_label">Alerts</string>
 	<string name="new_task_name_hint">Task Name</string>
 	<string name="new_task_interval_hint">Task Interval</string>
+	<string name="delete">Delete</string>
 </resources>

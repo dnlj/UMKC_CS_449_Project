@@ -1,9 +1,13 @@
 package dnlj.umkc.cs449.tasky;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +21,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and
 	// you provide access to all the views for a data item in a view holder
-	public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder
+		implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
+		
 		public TextView mTextView;
 		
 		public ViewHolder(View view) {
@@ -31,6 +37,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 			});
 			
 			mTextView = view.findViewById(R.id.text_view);
+			view.setOnLongClickListener(this);
+		}
+		
+		@Override
+		public boolean onLongClick(View v) {
+			PopupMenu menu = new PopupMenu(v.getContext(), v);
+			
+			menu.getMenuInflater().inflate(R.menu.task_context_menu, menu.getMenu());
+			menu.setOnMenuItemClickListener(this);
+			menu.show();
+			
+			return true;
+		}
+		
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			System.out.println("Item Click");
+			return true;
 		}
 	}
 	
@@ -40,7 +64,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	
 	public void addTask(TaskInfo task) {
 		data.add(task);
-		System.out.println(task.alert);
 		notifyItemInserted(data.size() - 1);
 	}
 	
