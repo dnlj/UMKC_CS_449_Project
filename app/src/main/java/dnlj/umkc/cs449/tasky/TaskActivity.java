@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 
 import java.time.LocalDate;
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity implements View.OnLongClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +36,8 @@ public class TaskActivity extends AppCompatActivity {
 		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			AppCompatButton btn = new AppCompatButton(gridLayout.getContext());
 			btn.setText(String.valueOf(date.getDayOfMonth()));
+			btn.setId(date.getDayOfMonth());
+			btn.setOnLongClickListener(this);
 			
 			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
 				btn.setEnabled(false);
@@ -48,5 +53,24 @@ public class TaskActivity extends AppCompatActivity {
 			
 			gridLayout.addView(btn, params);
 		}
+	}
+	
+	@Override
+	public boolean onLongClick(View v) {
+		final int id = v.getId();
+		
+		PopupMenu menu = new PopupMenu(v.getContext(), v);
+		menu.getMenuInflater().inflate(R.menu.task_context_complete, menu.getMenu());
+		
+		menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				System.out.println("ID: " + id);
+				return true;
+			}
+		});
+		
+		menu.show();
+		return true;
 	}
 }
