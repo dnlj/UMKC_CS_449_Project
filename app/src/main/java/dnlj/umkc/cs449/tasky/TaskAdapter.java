@@ -3,9 +3,7 @@ package dnlj.umkc.cs449.tasky;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	private ArrayList<TaskInfo> data;
+	private TaskRepository taskRepository;
 	
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and
@@ -67,17 +66,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		}
 	}
 	
+	public TaskAdapter(TaskRepository taskRepository) {
+		data = new ArrayList<>();
+		this.taskRepository = taskRepository;
+	}
+	
 	private void removeTask(int position) {
+		//taskDatabase.taskInfoDAO().addTask(data.get(position));
 		data.remove(position);
 		notifyItemRemoved(position);
 	}
 	
-	public TaskAdapter() {
-		data = new ArrayList<>();
-	}
-	
 	public void addTask(TaskInfo task) {
 		data.add(task);
+		taskRepository.addTask(task);
 		notifyItemInserted(data.size() - 1);
 	}
 	

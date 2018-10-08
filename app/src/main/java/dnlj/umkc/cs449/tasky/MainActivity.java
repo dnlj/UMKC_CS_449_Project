@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private RecyclerView.LayoutManager layoutManager;
 	private TaskAdapter adapter;
+	private TaskRepository taskRepository;
 	
 	private Toolbar toolbar;
 	
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Create database
+		taskRepository = new TaskRepository(TaskDatabase.getDatabase(this));
 		
 		// Setup toolbar
 		toolbar = findViewById(R.id.toolbar);
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 		// Setup recycler view
 		recyclerView = findViewById(R.id.task_view);
 		layoutManager = new LinearLayoutManager(this);
-		adapter = new TaskAdapter();
+		adapter = new TaskAdapter(taskRepository);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
