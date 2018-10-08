@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends AppCompatActivity {
 	private RecyclerView recyclerView;
 	private RecyclerView.LayoutManager layoutManager;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 		// Setup recycler view
 		recyclerView = findViewById(R.id.task_view);
 		layoutManager = new LinearLayoutManager(this);
-		adapter = new TaskAdapter(taskRepository);
+		adapter = new TaskAdapter();
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
@@ -42,14 +44,16 @@ public class MainActivity extends AppCompatActivity {
 		// Other setup
 		setupListeners();
 		
-		for (int i =0; i < 5; ++i) {
-			TaskInfo task = new TaskInfo();
-			
-			task.name = "Task: " + String.valueOf(i);
-			task.interval = 0;
-			task.alert = true;
-			
-			adapter.addTask(task);
+		// Load Tasks
+		try {
+			TaskInfo[] tasks = taskRepository.loadTasks();
+			for (TaskInfo task : tasks) {
+				adapter.addTask(task);
+			}
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	public void addTask(TaskInfo task) {
-		System.out.println("~~~ Add Task");
+		taskRepository.addTask(task);
 		adapter.addTask(task);
 	}
 	

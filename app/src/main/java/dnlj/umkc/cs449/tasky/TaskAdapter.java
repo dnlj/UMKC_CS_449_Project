@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	private ArrayList<TaskInfo> data;
-	private TaskRepository taskRepository;
 	
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and
@@ -66,20 +65,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		}
 	}
 	
-	public TaskAdapter(TaskRepository taskRepository) {
+	public TaskAdapter() {
 		data = new ArrayList<>();
-		this.taskRepository = taskRepository;
 	}
 	
 	private void removeTask(int position) {
-		//taskDatabase.taskInfoDAO().addTask(data.get(position));
 		data.remove(position);
 		notifyItemRemoved(position);
 	}
 	
 	public void addTask(TaskInfo task) {
 		data.add(task);
-		taskRepository.addTask(task);
 		notifyItemInserted(data.size() - 1);
 	}
 	
