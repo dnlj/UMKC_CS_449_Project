@@ -12,9 +12,6 @@ public interface TaskInfoDAO {
 	@Insert
 	public void addTask(TaskInfo info);
 	
-	@Update
-	public void updateTask(TaskInfo info);
-	
 	@Delete
 	public void removeTask(TaskInfo info);
 	
