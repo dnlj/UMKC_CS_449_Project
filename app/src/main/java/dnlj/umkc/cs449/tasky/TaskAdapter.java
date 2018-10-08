@@ -17,21 +17,17 @@ import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	private ArrayList<TaskInfo> data;
+	private MainActivity owner;
 	
-	// Provide a reference to the views for each data item
-	// Complex data items may need more than one view per item, and
-	// you provide access to all the views for a data item in a view holder
-	public static class ViewHolder extends RecyclerView.ViewHolder
+	public class ViewHolder extends RecyclerView.ViewHolder
 		implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener, View.OnClickListener {
 		
 		public TextView mTextView;
-		private TaskAdapter taskAdapter;
 		
-		public ViewHolder(View view, TaskAdapter adapter) {
+		public ViewHolder(View view) {
 			super(view);
 			
 			mTextView = view.findViewById(R.id.text_view);
-			taskAdapter = adapter;
 			
 			view.setOnClickListener(this);
 			view.setOnLongClickListener(this);
@@ -50,14 +46,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			taskAdapter.removeTask(getAdapterPosition());
+			owner.removeTask(data.get(getAdapterPosition()));
 			return true;
 		}
 		
 		@Override
 		public void onClick(View v) {
-			System.out.println("Click: " + getAdapterPosition());
-			
 			Context ctx = v.getContext();
 			Intent intent = new Intent(ctx, TaskActivity.class);
 			intent.putExtra("task_id", getAdapterPosition());
@@ -65,8 +59,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		}
 	}
 	
-	public TaskAdapter() {
+	public TaskAdapter(MainActivity owner) {
 		data = new ArrayList<>();
+		this.owner = owner;
+	}
+	
+	public void removeTask(TaskInfo task) {
+		int index = data.indexOf(task);
+		if (index == -1) { return; }
+		removeTask(index);
 	}
 	
 	private void removeTask(int position) {
@@ -85,7 +86,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		View view = LayoutInflater.from(parent.getContext())
 			.inflate(R.layout.task_card, parent, false);
 		
-		return new ViewHolder(view, this);
+		return new ViewHolder(view);
 	}
 	
 	// Replace the contents of a view (invoked by the layout manager)

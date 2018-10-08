@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 		// Setup recycler view
 		recyclerView = findViewById(R.id.task_view);
 		layoutManager = new LinearLayoutManager(this);
-		adapter = new TaskAdapter();
+		adapter = new TaskAdapter(this);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
@@ -57,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
 	public void addTask(TaskInfo task) {
 		taskRepository.addTask(task);
 		adapter.addTask(task);
+	}
+	
+	public void removeTask(TaskInfo task) {
+		taskRepository.removeTask(task);
+		adapter.removeTask(task);
 	}
 	
 	private void showNewTaskDialog() {
