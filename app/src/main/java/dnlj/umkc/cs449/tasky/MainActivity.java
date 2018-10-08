@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
 		
-		// Other setup
-		setupListeners();
-		
 		// Load Tasks
 		try {
 			TaskInfo[] tasks = taskRepository.loadTasks();
@@ -55,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void setupListeners() {
-		// TODO:
 	}
 	
 	public void addTask(TaskInfo task) {
