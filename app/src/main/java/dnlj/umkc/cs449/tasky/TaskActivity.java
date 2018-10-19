@@ -1,10 +1,13 @@
 package dnlj.umkc.cs449.tasky;
 
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -42,7 +45,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
 				btn.setEnabled(false);
 			} else if (date.isEqual(currentDate)) {
-				// TODO: Hightlight current date
+				TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorAccent});
+				btn.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
+				arr.recycle();
 			}
 			
 			GridLayout.LayoutParams params = new GridLayout.LayoutParams();
