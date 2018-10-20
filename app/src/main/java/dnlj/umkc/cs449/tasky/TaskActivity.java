@@ -64,21 +64,44 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 	}
 	
 	@Override
-	public boolean onLongClick(View v) {
-		final int id = v.getId();
-		
+	public boolean onLongClick(final View v) {
 		PopupMenu menu = new PopupMenu(v.getContext(), v);
 		menu.getMenuInflater().inflate(R.menu.task_context_complete, menu.getMenu());
 		
 		menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				System.out.println("ID: " + id);
+				final int id = item.getItemId();
+				
+				if (id == R.id.unknown) {
+					setAsUnknown(v);
+				} else if (id == R.id.complete) {
+					setAsComplete(v);
+				} else if (id == R.id.incomplete) {
+					setAsIncomplete(v);
+				}
+				
 				return true;
 			}
 		});
 		
 		menu.show();
 		return true;
+	}
+	
+	private void setAsUnknown(View v) {
+		v.setBackgroundTintList(ColorStateList.valueOf(0));
+	}
+	
+	private void setAsComplete(View v) {
+		TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorPrimary});
+		v.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
+		arr.recycle();
+	}
+	
+	private void setAsIncomplete(View v) {
+		TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorControlNormal});
+		v.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
+		arr.recycle();
 	}
 }
