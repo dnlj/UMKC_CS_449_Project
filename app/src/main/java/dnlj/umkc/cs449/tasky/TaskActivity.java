@@ -2,6 +2,7 @@ package dnlj.umkc.cs449.tasky;
 
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -41,6 +42,8 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 			btn.setText(String.valueOf(date.getDayOfMonth()));
 			btn.setId(date.getDayOfMonth());
 			btn.setOnLongClickListener(this);
+			btn.setBackground(getResources().getDrawable(R.drawable.button_calendar, getTheme()));
+			
 			
 			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
 				btn.setEnabled(false);
