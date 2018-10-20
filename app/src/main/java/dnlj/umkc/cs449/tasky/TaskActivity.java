@@ -48,9 +48,7 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
 				btn.setEnabled(false);
 			} else if (date.isEqual(currentDate)) {
-				TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorAccent});
-				btn.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
-				arr.recycle();
+				setBackgroundTintFromResourceId(btn, R.attr.colorAccent);
 			}
 			
 			GridLayout.LayoutParams params = new GridLayout.LayoutParams();
@@ -94,13 +92,15 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 	}
 	
 	private void setAsComplete(View v) {
-		TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorPrimary});
-		v.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
-		arr.recycle();
+		setBackgroundTintFromResourceId(v, R.attr.colorPrimary);
 	}
 	
 	private void setAsIncomplete(View v) {
-		TypedArray arr = obtainStyledAttributes(new int[]{R.attr.colorControlNormal});
+		setBackgroundTintFromResourceId(v, R.attr.colorControlNormal);
+	}
+	
+	private void setBackgroundTintFromResourceId(View v, int resColor) {
+		TypedArray arr = obtainStyledAttributes(new int[]{resColor});
 		v.setBackgroundTintList(ColorStateList.valueOf(arr.getColor(0, 0)));
 		arr.recycle();
 	}
