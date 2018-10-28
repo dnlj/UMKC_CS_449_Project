@@ -11,6 +11,10 @@ public class TaskRepository {
 		this.taskDatabase = taskDatabase;
 	}
 	
+	public void updateTask(String name, TaskInfo info) {
+		new UpdateTaskAsync(taskDatabase.taskInfoDAO()).execute(name, info);
+	}
+	
 	public void addTask(TaskInfo info) {
 		new AddTaskAsync(taskDatabase.taskInfoDAO()).execute(info);
 	}
@@ -25,6 +29,26 @@ public class TaskRepository {
 	
 	public TaskInfo loadTask(String name) throws ExecutionException, InterruptedException {
 		return new LoadTaskAsync(taskDatabase.taskInfoDAO()).execute(name).get();
+	}
+	
+	private static class UpdateTaskAsync extends AsyncTask<Object, Void, Void> {
+		private TaskInfoDAO taskInfoDAO;
+		
+		public UpdateTaskAsync(TaskInfoDAO taskInfoDAO) {
+			this.taskInfoDAO = taskInfoDAO;
+		}
+		
+		@Override
+		protected Void doInBackground(Object... params) {
+			TaskInfo info = (TaskInfo) params[1];
+			String name = (String) params[0];
+			
+			taskInfoDAO.updateTaskName(name, info.name);
+			taskInfoDAO.updateTaskInterval(name, info.interval);
+			taskInfoDAO.updateTaskAlert(name, info.alert);
+			
+			return null;
+		}
 	}
 	
 	private static class AddTaskAsync extends AsyncTask<TaskInfo, Void, Void> {

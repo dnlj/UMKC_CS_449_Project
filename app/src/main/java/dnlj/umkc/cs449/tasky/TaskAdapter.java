@@ -46,7 +46,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			owner.removeTask(data.get(getAdapterPosition()));
+			int id = item.getItemId();
+			TaskInfo info = data.get(getAdapterPosition());
+			
+			if (id == R.id.delete_task) {
+				owner.removeTask(info);
+			} else if (id == R.id.edit_task) {
+				owner.showNewTaskDialog().setTaskInfo(info);
+			}
+			
 			return true;
 		}
 		
@@ -78,6 +86,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 	public void addTask(TaskInfo task) {
 		data.add(task);
 		notifyItemInserted(data.size() - 1);
+	}
+	
+	public void updateTask(String name, TaskInfo task) {
+		for (int i = 0; i < data.size(); ++i) {
+			if (data.get(i).name == name) {
+				data.set(i, task);
+				notifyItemChanged(i);
+				break;
+			}
+		}
 	}
 	
 	// Create new views (invoked by the layout manager)

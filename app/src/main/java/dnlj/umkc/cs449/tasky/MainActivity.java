@@ -42,16 +42,12 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setAdapter(adapter);
 		
 		// Load Tasks
-		try {
-			TaskInfo[] tasks = taskRepository.loadTasks();
-			for (TaskInfo task : tasks) {
-				adapter.addTask(task);
-			}
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		loadTasks();
+	}
+	
+	public void updateTask(String name, TaskInfo task) {
+		taskRepository.updateTask(name, task);
+		adapter.updateTask(name, task);
 	}
 	
 	public void addTask(TaskInfo task) {
@@ -64,10 +60,24 @@ public class MainActivity extends AppCompatActivity {
 		adapter.removeTask(task);
 	}
 	
-	private void showNewTaskDialog() {
+	public void loadTasks() {
+		try {
+			TaskInfo[] tasks = taskRepository.loadTasks();
+			for (TaskInfo task : tasks) {
+				adapter.addTask(task);
+			}
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public NewTaskDialogFragment showNewTaskDialog() {
 		NewTaskDialogFragment ntdf = new NewTaskDialogFragment();
 		ntdf.show(getSupportFragmentManager(), null);
 		ntdf.setCancelable(true);
+		return ntdf;
 	}
 	
 	@Override

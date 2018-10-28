@@ -20,4 +20,13 @@ public interface TaskInfoDAO {
 	
 	@Query("SELECT * FROM TaskInfo WHERE name = :name")
 	public TaskInfo loadTask(String name);
+	
+	@Query("Update TaskInfo SET name = :name WHERE name = :task")
+	public void updateTaskName(String task, String name);
+	
+	@Query("Update TaskInfo SET interval = :interval WHERE name = :task")
+	public void updateTaskInterval(String task, int interval);
+	
+	@Query("Update TaskInfo SET alert = :alert WHERE name = :task")
+	public void updateTaskAlert(String task, boolean alert);
 }
