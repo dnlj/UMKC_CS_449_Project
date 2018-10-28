@@ -2,28 +2,49 @@ package dnlj.umkc.cs449.tasky;
 
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class TaskActivity extends AppCompatActivity implements View.OnLongClickListener {
+	private TaskInfo info;
+	private TaskRepository taskRepository;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task);
 		
+		// Get DB
+		taskRepository = new TaskRepository(TaskDatabase.getDatabase(getApplicationContext()));
+		
+		// Get task info
+		try {
+			info = taskRepository.loadTask(getIntent().getStringExtra("task_name"));
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		if (info.events == null) {
+			info.events = new ArrayList<>();
+		}
+		
 		// Update toolbar
 		Toolbar toolbar = findViewById(R.id.task_toolbar);
-		toolbar.setTitle("Task: " + getIntent().getIntExtra("task_id", 0)); // TODO: Load title from DB
+		toolbar.setTitle("Task: " + info.name);
 		
 		// Generate calendar
 		GridLayout gridLayout = findViewById(R.id.task_calendar_grid);
@@ -40,10 +61,9 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			AppCompatButton btn = new AppCompatButton(gridLayout.getContext());
 			btn.setText(String.valueOf(date.getDayOfMonth()));
-			btn.setId(date.getDayOfMonth());
+			btn.setTag(date);
 			btn.setOnLongClickListener(this);
 			btn.setBackground(getResources().getDrawable(R.drawable.button_calendar, getTheme()));
-			
 			
 			if (date.isBefore(startOfMonth) || date.isAfter(endOfMonth)) {
 				btn.setEnabled(false);
@@ -59,6 +79,24 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 			
 			gridLayout.addView(btn, params);
 		}
+		
+		for (int i = 0; i < info.events.size(); ++i) {
+			DateEvent event = info.events.get(i);
+			LocalDate date = LocalDate.parse(event.date, DateTimeFormatter.ISO_DATE);
+			AppCompatButton btn = gridLayout.findViewWithTag(date);
+			
+			switch (event.state) {
+				case 0:
+					setAsUnknown(btn);
+					break;
+				case 1:
+					setAsComplete(btn);
+					break;
+				case 2:
+					setAsIncomplete(btn);
+					break;
+			}
+		}
 	}
 	
 	@Override
@@ -71,13 +109,21 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 			public boolean onMenuItemClick(MenuItem item) {
 				final int id = item.getItemId();
 				
+				DateEvent event = new DateEvent();
+				event.date = ((LocalDate)v.getTag()).format(DateTimeFormatter.ISO_DATE);
+				
 				if (id == R.id.unknown) {
+					event.state = 0;
 					setAsUnknown(v);
 				} else if (id == R.id.complete) {
+					event.state = 1;
 					setAsComplete(v);
 				} else if (id == R.id.incomplete) {
+					event.state = 2;
 					setAsIncomplete(v);
 				}
+				
+				updateDateEvent(event);
 				
 				return true;
 			}
@@ -85,6 +131,18 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 		
 		menu.show();
 		return true;
+	}
+	
+	private void updateDateEvent(DateEvent event) {
+		for (int i = 0; i < info.events.size(); ++i) {
+			if (info.events.get(i).date == event.date) {
+				info.events.remove(i);
+				break;
+			}
+		}
+		
+		info.events.add(event);
+		taskRepository.addTask(info);
 	}
 	
 	private void setAsUnknown(View v) {

@@ -23,6 +23,10 @@ public class TaskRepository {
 		return new LoadTasksAsync(taskDatabase.taskInfoDAO()).execute().get();
 	}
 	
+	public TaskInfo loadTask(String name) throws ExecutionException, InterruptedException {
+		return new LoadTaskAsync(taskDatabase.taskInfoDAO()).execute(name).get();
+	}
+	
 	private static class AddTaskAsync extends AsyncTask<TaskInfo, Void, Void> {
 		private TaskInfoDAO taskInfoDAO;
 		
@@ -61,6 +65,19 @@ public class TaskRepository {
 		@Override
 		protected TaskInfo[] doInBackground(Void... params) {
 			return taskInfoDAO.loadTasks();
+		}
+	}
+	
+	private static class LoadTaskAsync extends AsyncTask<String, Void, TaskInfo> {
+		private TaskInfoDAO taskInfoDAO;
+		
+		public LoadTaskAsync(TaskInfoDAO taskInfoDAO) {
+			this.taskInfoDAO = taskInfoDAO;
+		}
+		
+		@Override
+		protected TaskInfo doInBackground(String... params) {
+			return taskInfoDAO.loadTask(params[0]);
 		}
 	}
 }

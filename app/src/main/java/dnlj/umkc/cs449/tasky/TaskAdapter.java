@@ -54,7 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 		public void onClick(View v) {
 			Context ctx = v.getContext();
 			Intent intent = new Intent(ctx, TaskActivity.class);
-			intent.putExtra("task_id", getAdapterPosition());
+			intent.putExtra("task_name", data.get(getAdapterPosition()).name);
 			ctx.startActivity(intent);
 		}
 	}

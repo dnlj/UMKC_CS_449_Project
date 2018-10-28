@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
 @Entity
 public class TaskInfo {
 	@PrimaryKey
@@ -13,4 +15,6 @@ public class TaskInfo {
 	public int interval;
 	
 	public boolean alert;
+	
+	public ArrayList<DateEvent> events;
 }

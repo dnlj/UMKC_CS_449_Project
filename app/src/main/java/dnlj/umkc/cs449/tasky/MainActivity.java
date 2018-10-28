@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		
 		// Create database
-		taskRepository = new TaskRepository(TaskDatabase.getDatabase(this));
+		taskRepository = new TaskRepository(TaskDatabase.getDatabase(getApplicationContext()));
 		
 		// Setup toolbar
 		toolbar = findViewById(R.id.toolbar);

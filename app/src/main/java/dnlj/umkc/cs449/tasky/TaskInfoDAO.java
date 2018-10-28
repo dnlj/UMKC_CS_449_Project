@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update;
 
 @Dao
 public interface TaskInfoDAO {
-	@Insert
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	public void addTask(TaskInfo info);
 	
 	@Delete
@@ -17,4 +17,7 @@ public interface TaskInfoDAO {
 	
 	@Query("SELECT * FROM TaskInfo")
 	public TaskInfo[] loadTasks();
+	
+	@Query("SELECT * FROM TaskInfo WHERE name = :name")
+	public TaskInfo loadTask(String name);
 }

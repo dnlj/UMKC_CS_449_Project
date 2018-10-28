@@ -3,6 +3,7 @@ package dnlj.umkc.cs449.tasky;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 @Database(
@@ -11,6 +12,7 @@ import android.content.Context;
 	},
 	version = 1
 )
+@TypeConverters({Converters.class})
 public abstract class TaskDatabase extends RoomDatabase {
 	private static volatile TaskDatabase instance;
 	
