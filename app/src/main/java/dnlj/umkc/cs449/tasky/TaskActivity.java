@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.PopupMenu;
+import android.widget.Switch;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -97,6 +100,17 @@ public class TaskActivity extends AppCompatActivity implements View.OnLongClickL
 					break;
 			}
 		}
+		
+		// Alerts switch
+		Switch sw = findViewById(R.id.task_alert_toggle);
+		sw.setChecked(info.alert);
+		sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton view, boolean isChecked) {
+				info.alert = isChecked;
+				taskRepository.addTask(info);
+			}
+		});
 	}
 	
 	@Override
