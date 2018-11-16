@@ -12,7 +12,7 @@ public class TaskInfo {
 	@NonNull
 	public String name;
 	
-	public int interval;
+	public String interval;
 	
 	public boolean alert;
 	

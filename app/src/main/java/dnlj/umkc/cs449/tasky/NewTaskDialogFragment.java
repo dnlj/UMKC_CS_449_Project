@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 public class NewTaskDialogFragment extends DialogFragment {
@@ -55,7 +56,7 @@ public class NewTaskDialogFragment extends DialogFragment {
 				TaskInfo task = new TaskInfo();
 				
 				task.name = ((EditText) v.findViewById(R.id.new_task_name)).getText().toString();
-				task.interval = 0; // TODO: use enum or similar?
+				task.interval = ((Spinner) v.findViewById(R.id.new_task_interval)).getSelectedItem().toString();
 				task.alert = ((Switch) v.findViewById(R.id.new_task_alert_toggle)).isChecked();
 				
 				if (name == null) {

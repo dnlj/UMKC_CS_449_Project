@@ -25,7 +25,7 @@ public interface TaskInfoDAO {
 	public void updateTaskName(String task, String name);
 	
 	@Query("Update TaskInfo SET interval = :interval WHERE name = :task")
-	public void updateTaskInterval(String task, int interval);
+	public void updateTaskInterval(String task, String interval);
 	
 	@Query("Update TaskInfo SET alert = :alert WHERE name = :task")
 	public void updateTaskAlert(String task, boolean alert);

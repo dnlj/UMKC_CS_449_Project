@@ -11,4 +11,9 @@
 	<string name="complete">Complete</string>
 	<string name="incomplete">Incomplete</string>
 	<string name="edit">Edit</string>
+	<string-array name="interval_options">
+		<item>Daily</item>
+		<item>Weekly</item>
+		<item>Monthly</item>
+	</string-array>
 </resources>

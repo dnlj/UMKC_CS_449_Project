@@ -18,13 +18,11 @@
 		android:inputType="textPersonName"
 		android:singleLine="true" />
 
-	<EditText
+	<Spinner
 		android:id="@+id/new_task_interval"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:ems="10"
-		android:hint="@string/new_task_interval_hint"
-		android:inputType="number" />
+		android:entries="@array/interval_options" />
 
 	<Switch
 		android:id="@+id/new_task_alert_toggle"
