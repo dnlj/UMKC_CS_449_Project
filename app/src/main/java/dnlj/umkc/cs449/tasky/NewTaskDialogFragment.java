@@ -35,8 +35,19 @@ public class NewTaskDialogFragment extends DialogFragment {
 	private void updateViewElements(View v) {
 		if (info == null) { return; }
 		
+		int selection = -1;
+		
+		// TODO: This seems hacky. Find a better way.
+		if (info.interval.equals("Daily")) {
+			selection = 0;
+		} else if (info.interval.equals("Weekly")) {
+			selection = 1;
+		} else if (info.interval.equals("Monthly")) {
+			selection = 2;
+		}
+		
 		((EditText)v.findViewById(R.id.new_task_name)).setText(info.name);
-		//((EditText)v.findViewById(R.id.new_task_interval)).setText(info.interval);
+		((Spinner)v.findViewById(R.id.new_task_interval)).setSelection(selection);
 		((Switch)v.findViewById(R.id.new_task_alert_toggle)).setChecked(info.alert);
 	}
 	
