@@ -6,8 +6,10 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 
 public class NewTaskDialogFragment extends DialogFragment {
@@ -35,20 +37,18 @@ public class NewTaskDialogFragment extends DialogFragment {
 	private void updateViewElements(View v) {
 		if (info == null) { return; }
 		
-		int selection = -1;
-		
-		// TODO: This seems hacky. Find a better way.
-		if (info.interval.equals("Daily")) {
-			selection = 0;
-		} else if (info.interval.equals("Weekly")) {
-			selection = 1;
-		} else if (info.interval.equals("Monthly")) {
-			selection = 2;
-		}
-		
 		((EditText)v.findViewById(R.id.new_task_name)).setText(info.name);
-		((Spinner)v.findViewById(R.id.new_task_interval)).setSelection(selection);
 		((Switch)v.findViewById(R.id.new_task_alert_toggle)).setChecked(info.alert);
+		
+		Spinner spinner = v.findViewById(R.id.new_task_interval);
+		ArrayAdapter<String> adapter = (ArrayAdapter<String>)spinner.getAdapter();
+		
+		for (int i = 0; i < adapter.getCount(); ++i) {
+			if (adapter.getItem(i).equals(info.interval)) {
+				spinner.setSelection(i, false);
+				break;
+			}
+		}
 	}
 	
 	private void setupListeners(final View v) {
