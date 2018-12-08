@@ -1,6 +1,15 @@
 package dnlj.umkc.cs449.tasky;
 
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 	private TaskRepository taskRepository;
 	
 	private Toolbar toolbar;
+	public static String notificationChannelId = "dnlj.umkc.cs449.tasky";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +52,81 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
 		
+		// Setup notification channel
+		((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+			.createNotificationChannel(new NotificationChannel(
+					notificationChannelId,
+					notificationChannelId,
+					NotificationManager.IMPORTANCE_DEFAULT
+			));
+		
 		// Load Tasks
 		loadTasks();
+	}
+	
+	public Intent getNewAlarmIntent(String name) {
+		Intent intent = new Intent(this, AlarmReceiver.class);
+		intent.addCategory(name);
+		return intent;
+	}
+	
+	public void removeTaskAlert(String name) {
+		((AlarmManager) getSystemService(Context.ALARM_SERVICE))
+			.cancel(PendingIntent.getBroadcast(this, 0, getNewAlarmIntent(name), 0));
+	}
+	
+	public void updateTaskAlert(String name, TaskInfo task) {
+		removeTaskAlert(name);
+		addTaskAlert(task);
+	}
+	
+	public void addTaskAlert(TaskInfo task) {
+		if (task.alert) {
+			AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			
+			Intent intent = getNewAlarmIntent(task.name);
+			intent.putExtra("text", "Don't forget to " + task.name + "!");
+			
+			PendingIntent pending = PendingIntent.getBroadcast(this, 0, intent, 0);
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(System.currentTimeMillis());
+			cal.set(Calendar.HOUR_OF_DAY, 11);
+			cal.set(Calendar.MINUTE, 30);
+			
+			long interval = AlarmManager.INTERVAL_DAY;
+			
+			if (task.interval.equals("Monthly")) {
+				interval *= 30;
+			} else if (task.interval.equals("Weekly")) {
+				interval *= 7;
+			}
+			
+			am.setInexactRepeating(
+				AlarmManager.RTC_WAKEUP,
+				cal.getTimeInMillis(),
+				AlarmManager.INTERVAL_DAY,
+				pending
+			);
+		}
 	}
 	
 	public void updateTask(String name, TaskInfo task) {
 		taskRepository.updateTask(name, task);
 		adapter.updateTask(name, task);
+		updateTaskAlert(name, task);
 	}
 	
 	public void addTask(TaskInfo task) {
 		taskRepository.addTask(task);
 		adapter.addTask(task);
+		addTaskAlert(task);
 	}
 	
 	public void removeTask(TaskInfo task) {
 		taskRepository.removeTask(task);
 		adapter.removeTask(task);
+		removeTaskAlert(task.name);
 	}
 	
 	public void loadTasks() {
