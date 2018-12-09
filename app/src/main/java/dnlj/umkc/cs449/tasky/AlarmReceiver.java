@@ -9,8 +9,6 @@ import android.support.v4.app.NotificationCompat;
 public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		System.out.println("~~~~~~~ RECV");
-		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MainActivity.notificationChannelId)
 			.setSmallIcon(R.drawable.button_calendar)
 			.setContentTitle(intent.getStringExtra("text"));
