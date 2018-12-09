@@ -102,10 +102,12 @@ public class MainActivity extends AppCompatActivity {
 				interval *= 7;
 			}
 			
-			am.setInexactRepeating(
-				AlarmManager.RTC_WAKEUP,
+			System.out.println("~~~~~~~~~~~~~~~ ADD");
+			
+			am.setRepeating(
+				AlarmManager.RTC,
 				cal.getTimeInMillis(),
-				AlarmManager.INTERVAL_DAY,
+				interval,
 				pending
 			);
 		}
