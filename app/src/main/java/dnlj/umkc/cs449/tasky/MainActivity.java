@@ -102,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
 				interval *= 7;
 			}
 			
-			am.setRepeating(
+			am.setInexactRepeating(
 				AlarmManager.RTC,
-				cal.getTimeInMillis(),
+				cal.getTimeInMillis() + interval,
 				interval,
 				pending
 			);
