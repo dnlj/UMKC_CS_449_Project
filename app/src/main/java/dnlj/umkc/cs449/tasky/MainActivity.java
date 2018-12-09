@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
 				interval *= 7;
 			}
 			
-			System.out.println("~~~~~~~~~~~~~~~ ADD");
-			
 			am.setRepeating(
 				AlarmManager.RTC,
 				cal.getTimeInMillis(),
